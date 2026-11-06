@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+
+const linkHref = (href: string) => (href.startsWith('http') ? href : withBase(href));
+---
+
+<Base title={`About Me — ${site.displayName}`} description={`About ${site.displayName}: ${site.description}`}>
+  <h1>About Me</h1>
+
+  {site.about.intro.map((paragraph) => <p>{paragraph}</p>)}
+
+  <blockquote>{site.about.quote}</blockquote>
+
+  <h2>My Machine</h2>
+  <table class="retro-table">
+    <thead>
+      <tr><th scope="col">Part</th><th scope="col">Spec</th></tr>
+    </thead>
+    <tbody>
+      {
+        site.about.specs.map((item) => (
+          <tr>
+            <td>{item.label}</td>
+            <td>{item.value}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <h2>Favorites</h2>
+  <table class="retro-table">
+    <tbody>
+      {
+        site.about.favorites.map((item) => (
+          <tr>
+            <th scope="row" style="width:34%">{item.label}</th>
+            <td>{item.value}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <h2>My Friends</h2>
+  <ul>
+    {
+      site.about.friends.map((friend) => (
+        <li>
+          <a href={linkHref(friend.href)} target={friend.href.startsWith('http') ? '_blank' : undefined} rel={friend.href.startsWith('http') ? 'noreferrer' : undefined}>
+            {friend.label}
+          </a>{' '}
+          &mdash; {friend.note}
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="center" style="margin-top:24px">
+    <a href={withBase('/')}>&laquo; Back to the homepage</a> &middot;
+    <a href={withBase('/blog/')}>Read my blog</a>
+  </p>
+</Base>

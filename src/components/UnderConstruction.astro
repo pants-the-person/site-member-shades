@@ -1,0 +1,11 @@
+---
+interface Props {
+  big?: boolean;
+}
+
+const { big = false } = Astro.props;
+---
+
+<div class={`uc${big ? ' big' : ''}`} role="note" aria-label="This page is under construction">
+  <span>Under Construction</span>
+</div>

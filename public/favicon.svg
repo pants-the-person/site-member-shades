@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#1a0033"/>
+  <rect x="2" y="2" width="28" height="28" fill="none" stroke="#ff6600" stroke-width="2"/>
+  <text x="16" y="22" text-anchor="middle" font-family="'Courier New', monospace" font-size="14" font-weight="bold" fill="#00ffff">UL</text>
+</svg>

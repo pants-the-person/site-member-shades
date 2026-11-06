@@ -1,0 +1,23 @@
+---
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+---
+
+<div class="box">
+  <h2 class="box-title">My Buttons</h2>
+  <div class="box-body">
+    <div class="badges">
+      {
+        site.badges.map((badge, index) => (
+          <img
+            src={withBase(`/badges/badge-${index + 1}.svg`)}
+            width="88"
+            height="31"
+            alt={badge.label}
+            loading="lazy"
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>

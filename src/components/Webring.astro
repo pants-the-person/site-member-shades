@@ -1,0 +1,15 @@
+---
+import { site } from '../site.config';
+---
+
+<div class="box">
+  <h2 class="box-title">Webring</h2>
+  <div class="box-body">
+    <p class="tiny">{site.webring.name}</p>
+    <p class="webring-nav">
+      <a href={site.webring.prev}>&laquo; prev</a> &middot;
+      <a href={site.webring.random}>random</a> &middot;
+      <a href={site.webring.next}>next &raquo;</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+{
+  "name": "site-member-shades",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "UltimateShades' 1999 gaming shrine: LucasArts adventure games, reviews, hints and high scores.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.4.5"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

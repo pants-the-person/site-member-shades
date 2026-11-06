@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import UnderConstruction from '../components/UnderConstruction.astro';
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+
+const linkHref = (href: string) => (href.startsWith('http') ? href : withBase(href));
+---
+
+<Base>
+  <h1>{site.home.welcomeTitle}</h1>
+
+  {site.home.welcome.map((paragraph) => <p set:html={paragraph} />)}
+
+  <div class="center" style="margin:16px 0">
+    <UnderConstruction big />
+  </div>
+
+  <p class="center">
+    <span class="stamp">Last updated {site.updated}</span>
+  </p>
+
+  <h2>What's New</h2>
+  <ul class="news-list">
+    {
+      site.home.news.map((item) => (
+        <li>
+          <span class="date">{item.date}</span>
+          {item.text}
+        </li>
+      ))
+    }
+  </ul>
+
+  {site.home.nowPlaying && <p class="now-playing">&#9835; Now playing: {site.home.nowPlaying}</p>}
+
+  <h2>My Favorite Things</h2>
+  <table class="retro-table">
+    <tbody>
+      {
+        site.home.favorites.map((item) => (
+          <tr>
+            <th scope="row" style="width:34%">{item.label}</th>
+            <td>{item.value}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <h2>{site.asciiTitle}</h2>
+  <pre class="ascii">{site.ascii}</pre>
+
+  <h2>Cool Links</h2>
+  <ul>
+    {
+      site.home.links.map((link) => (
+        <li>
+          <a href={linkHref(link.href)} target={link.href.startsWith('http') ? '_blank' : undefined} rel={link.href.startsWith('http') ? 'noreferrer' : undefined}>
+            {link.label}
+          </a>{' '}
+          &mdash; {link.note}
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="center signbox">
+    <p class="blink">&#9733; PLEASE SIGN MY GUESTBOOK &#9733;</p>
+    <p>
+      <a class="big-link" href={withBase('/guestbook/')}>Sign the guestbook &raquo;</a>
+    </p>
+    <p class="tiny">
+      Or send me e-mail at <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+  </div>
+</Base>

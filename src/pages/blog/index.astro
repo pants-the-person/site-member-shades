@@ -1,0 +1,34 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../site.config';
+import { formatDate, postUrl, withBase } from '../../lib/site';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<Base title={`Blog — ${site.displayName}`} description={`The blog of ${site.displayName}: ${site.description}`}>
+  <h1>My Blog</h1>
+  <p>
+    Thoughts, updates and things I found on the information superhighway.
+    {posts.length} entries so far. Updated {site.updated}.
+  </p>
+
+  <ul class="post-list">
+    {
+      posts.map((entry) => (
+        <li>
+          <span class="post-date">{formatDate(entry.data.date)}</span>
+          <a class="post-title" href={postUrl(entry.id)}>{entry.data.title}</a>
+          <p>{entry.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="center" style="margin-top:20px">
+    <a href={withBase('/')}>&laquo; Back to the homepage</a>
+  </p>
+</Base>

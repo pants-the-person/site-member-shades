@@ -1,0 +1,39 @@
+---
+import { site } from '../site.config';
+---
+
+<div class="box">
+  <h2 class="box-title">Visitors</h2>
+  <div class="box-body">
+    <div
+      class="hitcounter"
+      data-hit-counter
+      data-key={site.slug}
+      data-base={site.hitBase}
+      aria-label="Visitor counter"
+    >
+      <span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span>
+    </div>
+    <p class="tiny">since {site.since} &middot; you are visitor</p>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const counter = document.querySelector('[data-hit-counter]');
+    if (!counter) return;
+    const key = 'hitcounter:' + counter.dataset.key;
+    let seen = 0;
+    try {
+      seen = Number(localStorage.getItem(key) || '0') + 1;
+      localStorage.setItem(key, String(seen));
+    } catch {
+      seen = 1;
+    }
+    const total = String(Number(counter.dataset.base || 0) + seen).padStart(6, '0');
+    const digits = counter.querySelectorAll('span');
+    total.split('').forEach((digit, index) => {
+      if (digits[index]) digits[index].textContent = digit;
+    });
+  })();
+</script>

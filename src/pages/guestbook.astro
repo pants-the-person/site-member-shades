@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+---
+
+<Base title={`Guestbook — ${site.displayName}`} description={`Sign the guestbook for ${site.displayName}.`}>
+  <h1>Sign My Guestbook!</h1>
+  <p>
+    Thanks for visiting. Leave a message so I know you were here. Please keep it
+    nice &mdash; this is a family-friendly corner of the World Wide Web.
+  </p>
+
+  <form class="guestbook-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
+    <label>
+      Your name:
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label>
+      Your e-mail (optional):
+      <input type="email" name="email" autocomplete="email" />
+    </label>
+    <label>
+      Your homepage:
+      <input type="url" name="homepage" placeholder="http://" />
+    </label>
+    <label>
+      Message:
+      <textarea name="message" rows="4" required></textarea>
+    </label>
+    <button type="submit">Sign it!</button>
+    <p class="tiny" style="margin:8px 0 0;text-align:left">
+      This form opens your e-mail program. That is how we did it in 1999.
+    </p>
+  </form>
+
+  <h2>Recent Entries</h2>
+
+  {
+    site.guestbook.entries.map((entry) => (
+      <div class="guestbook-entry">
+        <span class="who">
+          {entry.name} &middot; {entry.date}
+        </span>
+        <p>{entry.message}</p>
+      </div>
+    ))
+  }
+
+  <p class="center" style="margin-top:20px">
+    <a href={withBase('/')}>&laquo; Back to the homepage</a>
+  </p>
+</Base>

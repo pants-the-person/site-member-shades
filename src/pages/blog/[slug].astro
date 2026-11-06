@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { site } from '../../site.config';
+import { formatDate, postUrl, withBase } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'blog'> };
+const { Content } = await render(entry);
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const index = posts.findIndex((post) => post.id === entry.id);
+const newer = index > 0 ? posts[index - 1] : undefined;
+const older = index >= 0 && index < posts.length - 1 ? posts[index + 1] : undefined;
+---
+
+<Base title={`${entry.data.title} — ${site.displayName}`} description={entry.data.description}>
+  <article>
+    <h1>{entry.data.title}</h1>
+    <p class="post-meta">
+      {formatDate(entry.data.date)} &middot; posted by {entry.data.author}
+    </p>
+
+    {entry.data.tags.length > 0 && <p class="tags">Filed under: {entry.data.tags.map((tag) => `#${tag}`).join(' ')}</p>}
+
+    <Content />
+
+    <nav class="post-nav" aria-label="More posts">
+      <span>{newer ? <a href={postUrl(newer.id)}>&laquo; Newer: {newer.data.title}</a> : <span>&nbsp;</span>}</span>
+      <span>{older ? <a href={postUrl(older.id)}>Older: {older.data.title} &raquo;</a> : <span>&nbsp;</span>}</span>
+    </nav>
+  </article>
+
+  <p class="center" style="margin-top:20px">
+    <a href={withBase('/blog/')}>&laquo; All blog entries</a> &middot;
+    <a href={withBase('/')}>Home</a>
+  </p>
+</Base>

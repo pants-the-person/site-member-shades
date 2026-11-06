@@ -1,0 +1,32 @@
+---
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const hrefFor = (href: string) => withBase(href);
+const norm = (href: string) => href.replace(/\/+$/, '') || '/';
+
+const links = site.nav.map((item) => {
+  const href = hrefFor(item.href);
+  const exact = current === norm(href);
+  const nested = item.href !== '/' && current.startsWith(`${norm(href)}/`);
+  return { ...item, href, active: exact || nested };
+});
+---
+
+<div class="box">
+  <h2 class="box-title">Navigation</h2>
+  <div class="box-body">
+    <ul class="nav-list">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} aria-current={link.active ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

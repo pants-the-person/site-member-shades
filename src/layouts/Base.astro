@@ -1,0 +1,86 @@
+---
+import { site } from '../site.config';
+import { withBase } from '../lib/site';
+import Marquee from '../components/Marquee.astro';
+import Nav from '../components/Nav.astro';
+import HitCounter from '../components/HitCounter.astro';
+import Badges from '../components/Badges.astro';
+import Webring from '../components/Webring.astro';
+import UnderConstruction from '../components/UnderConstruction.astro';
+import '../styles/retro.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const t = site.theme;
+
+const themeVars = [
+  `--bg:${t.bg}`,
+  `--panel:${t.panel}`,
+  `--panel2:${t.panel2}`,
+  `--ink:${t.ink}`,
+  `--accent:${t.accent}`,
+  `--accent2:${t.accent2}`,
+  `--link:${t.link}`,
+  `--visited:${t.visited}`,
+  `--headerBg:${t.headerBg}`,
+  `--headerBg2:${t.headerBg2}`,
+  `--headerInk:${t.headerInk}`,
+  `--heading:${t.heading}`,
+].join(';');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class={`pattern-${t.pattern}`} style={themeVars}>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="page">
+      <header class="masthead">
+        <p class="est">
+          EST. {site.since} &middot; {site.kind === 'member' ? 'MEMBER PAGE' : 'CHARACTER PAGE'} &middot; {site.handle}
+        </p>
+        <h1><a href={withBase('/')}>{site.displayName}</a></h1>
+        <p class="tagline">{site.tagline}</p>
+      </header>
+
+      <Marquee />
+
+      <div class="layout">
+        <aside class="sidebar">
+          <Nav />
+          <HitCounter />
+          <Badges />
+          <Webring />
+        </aside>
+
+        <main id="main" class="content">
+          <slot />
+        </main>
+      </div>
+
+      <footer class="footer">
+        <UnderConstruction />
+        <p>{site.copyright}</p>
+        <p>
+          <a href={withBase('/guestbook/')}>Sign my guestbook</a> &middot;
+          <a href={`mailto:${site.email}`}>E-mail me</a> &middot;
+          <a href={withBase('/blog/')}>My blog</a>
+        </p>
+        <p>Last updated {site.updated} &middot; Made with Notepad and Astro</p>
+        <p class="best">Best viewed in Netscape Navigator 4.0 at 800x600 &middot; This page is always under construction</p>
+      </footer>
+    </div>
+  </body>
+</html>
